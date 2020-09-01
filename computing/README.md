@@ -41,3 +41,32 @@ EC2を操作する方法は以下の通り
 
   aws ec2 terminate-instances --instance-ids ${INSTANCE_ID}
   ```
+
+## [演習1] EC2インスタンスでWebサーバを立ち上げる
+### EC2インスタンス作成
+以下の設定でEC2インスタンスを作成する
+* AMI: Amazon Linux 2 AMI (HVM), SSD Volume Type - 64 ビット (x86)
+* インスタンスタイプ: t2.micro
+* インスタンスの詳細の設定: デフォルト
+* ストレージの追加: デフォルト
+* タグの追加: Nameタグを追加する
+* セキュリティグループの設定: 新しいセキュリティグループを作成する  
+  以下を指定する  
+  * セキュリティグループ名
+  * 説明
+
+### EC2インスタンスの起動
+* キーペアを作成してダウンロードする
+  * ダウンロード先は自分のホームディレクトリの下  
+  例: C:\Users\MyAccount\Documents
+
+### EC2インスタンスに接続
+SSHでEC2インスタンスに接続する
+``` shell
+ssh -i ダウンロードしたキーファイル ec2-user@EC2インスタンスのIPv4 パブリック IP
+```
+
+例
+``` shell
+> ssh -i C:\Users\MyAccount\Documents\mykey.pem ec2-user@100.26.246.124
+```
