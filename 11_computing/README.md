@@ -61,6 +61,8 @@ EC2を操作する方法は以下の通り
   例: C:\Users\MyAccount\Documents
 
 ### EC2インスタンスに接続
+#### Windowsのコマンドプロンプトから接続する方法
+
 SSHでEC2インスタンスに接続する
 ``` shell
 ssh -i ダウンロードしたキーファイル ec2-user@EC2インスタンスのIPv4 パブリック IP
@@ -70,3 +72,83 @@ ssh -i ダウンロードしたキーファイル ec2-user@EC2インスタンス
 ``` shell
 > ssh -i C:\Users\MyAccount\Documents\mykey.pem ec2-user@100.26.246.124
 ```
+
+#### Cloud9で接続する方法
+1. Cloud9を立ち上げる  
+下の画像の「Open IDE」を押す。
+![Cloud9](./img/cloud9.png)
+
+2. ダウンロードしたキーファイルをCloud9にアップロード
+![Upload key file](./img/upload_keyfile.png)
+
+3. Cloud9からSSHでEC2インスタンスに接続する
+
+``` shell
+ssh -i アップロードしたキーファイル ec2-user@EC2インスタンスのIPv4 プライベート IP
+```
+
+__注意__ : Cloud9はEC2インスタンスと同一のネットワーク上に存在するので、「パブリックIP」ではなく「プライベートIP」で接続する。
+
+![Upload key file](./img/login_to_ec2.png)
+
+### nginxをインストール
+
+1. nginxをインストールする
+```
+sudo amazon-linux-extras install nginx1
+```
+
+2. nginxを起動する
+```
+sudo systemctl start nginx
+```
+
+`systemctl status`の結果、以下のように表示されればOK
+
+```
+[ec2-user@ip-172-31-63-250 ~]$ sudo systemctl status nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2020-09-08 09:06:27 UTC; 16s ago
+  Process: 1787 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 1784 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 1783 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 1790 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─1790 nginx: master process /usr/sbin/nginx
+           └─1791 nginx: worker process
+
+Sep 08 09:06:27 ip-172-31-63-250.ec2.internal systemd[1]: Starting The nginx HTTP and reverse proxy server...
+Sep 08 09:06:27 ip-172-31-63-250.ec2.internal nginx[1784]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+Sep 08 09:06:27 ip-172-31-63-250.ec2.internal nginx[1784]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+Sep 08 09:06:27 ip-172-31-63-250.ec2.internal systemd[1]: Failed to read PID from file /run/nginx.pid: Invalid argument
+Sep 08 09:06:27 ip-172-31-63-250.ec2.internal systemd[1]: Started The nginx HTTP and reverse proxy server.
+```
+
+3. nginxの自動起動を有効にする
+```
+sudo systemctl enable nginx
+```
+
+### EC2インスタンスのセキュリティグループの設定を変更
+1. EC2インスタンスの「説明」からセキュリティグループに移動  
+以下の画像の赤で囲んだ部分を押す
+
+![Upload key file](./img/sg1.png)
+
+2. インバウンドルールにHTTPを追加
+以下の画像の「インバウンドルールを編集」を押す
+
+![Upload key file](./img/sg2.png)
+
+以下の画像の
+* 「ルールを追加」を押す
+* 赤で囲んだ部分のとおりに情報を入力する
+* 「ルールを保存」を押す
+
+![Upload key file](./img/sg3.png)
+
+### 動作確認
+ブラウザからEC2インスタンスのパブリックIPでアクセスして以下の画面が表示されればOK
+
+![Upload key file](./img/nginx.png)
