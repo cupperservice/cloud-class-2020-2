@@ -30,3 +30,74 @@
 ### API Gateway
 
 ### CloudFront
+
+## 演習
+### ネットワーク構築
+* VPC
+* インターネットゲートウェイ
+* サブネット
+  * Public(インターネットからアクセス可能)/Private(インターネットからアクセス不可)
+* セキュリティグループ
+* ルートテーブル
+
+### サーバ構築
+* bastion
+* Webサーバ
+
+### Nginxインストール
+1. WebサーバにNginxをインストールする
+
+    ```
+    $ sudo amazon-linux-extras install nginx1
+    ```
+
+2. Nginxを起動
+
+    ```
+    $ sudo systemctl start nginx
+    ```
+
+3. Nginxの自動起動を有効にする
+
+    ```
+    $ sudo systemctl enable nginx
+    ```
+
+### PHPインストール
+1. WebサーバにNode.jsをインストールする
+
+    ```
+    $ sudo amazon-linux-extras install php7.4
+    ```
+
+2. php-fpmを起動する
+
+    ```
+    $ sudo systemctl start php-fpm
+    ```
+
+3. php-fpmの自動起動を有効にする
+
+    ```
+    $ sudo systemctl enable php-fpm
+    ```
+
+### 動作確認
+1. 動作確認要ファイル作成  
+以下のファイルを作成する
+* 場所  
+/usr/share/nginx/html/phpinfo.php
+
+* 内容
+  ```
+  <?php
+  phpinfo();
+  ?>
+  ```
+
+2. 動作確認  
+Webブラウザから以下のアドレスにアクセスする
+
+    ```
+    http://WebサーバのPublic IPアドレス/phpinfo.php
+    ```
