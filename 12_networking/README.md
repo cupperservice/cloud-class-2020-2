@@ -82,10 +82,42 @@
     $ sudo systemctl enable php-fpm
     ```
 
+### Nginxの定義ファイルを編集
+1. ファイルを編集
+* ファイル  
+/etc/php-fpm.d/www.conf
+
+* 修正内容
+  * 修正前
+    ```
+    ; Unix user/group of processes
+    ; Note: The user is mandatory. If the group is not set, the default user's group
+    ;       will be used.
+    ; RPM: apache user chosen to provide access to the same directories as httpd
+    user = apache
+    ; RPM: Keep a group allowed to write in log dir.
+    group = apache
+    ```
+  * 修正後
+    ```
+    ; Unix user/group of processes
+    ; Note: The user is mandatory. If the group is not set, the default user's group
+    ;       will be used.
+    ; RPM: apache user chosen to provide access to the same directories as httpd
+    user = nginx
+    ; RPM: Keep a group allowed to write in log dir.
+    group = nginx
+    ```
+
+2. php-fpm再起動
+    ```
+    $ sudo systemctl restart php-fpm
+    ```
+
 ### 動作確認
 1. 動作確認要ファイル作成  
 以下のファイルを作成する
-* 場所  
+* ファイル  
 /usr/share/nginx/html/phpinfo.php
 
 * 内容
