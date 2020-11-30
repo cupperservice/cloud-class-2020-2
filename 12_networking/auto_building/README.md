@@ -22,7 +22,7 @@ CloudFormationを使用して以下のリソースを作成する
   * Applicationサーバ
 
 ### 手順
-[sample.yml](./cloudformation/template)を使用してCloudFormationでスタックを作成する。
+[sample.yml](./cloudformation/templates/sample.yml)を使用してCloudFormationでスタックを作成する。
 
 ## 2. mongodb, growiをインストール(Ansible)
 ansibleを使用してmongodbとgrowiをインストールする。
@@ -115,73 +115,5 @@ CloudFormationを使用して以下のリソースを作成する
 * ロードバランサー
 * Auto Scalingグループ
 
-### 起動テンプレート
-* Type: AWS::EC2::LaunchTemplate
-* Properties
-  * InstanceType
-  * KeyName
-  * ImageId
-  * SecurityGroupIds
-  * TagSpecifications
-  * LaunchTemplateName
-
-### ターゲットグループ
-* Type: AWS::ElasticLoadBalancingV2::TargetGroup
-* Properties
-  * Name
-  * TargetType
-  * Port
-  * Protocol
-  * VpcId:
-  * HealthCheckEnabled
-  * HealthCheckIntervalSeconds
-  * HealthCheckPath
-  * HealthCheckProtocol
-  * HealthCheckTimeoutSeconds
-  * HealthyThresholdCount
-  * UnhealthyThresholdCount
-  * Matcher
-    * HttpCode
-
-### ロードバランサー
-* Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-* Properties
-  * Name
-  * Type
-  * Scheme
-  * SecurityGroups
-  * IpAddressType
-  * Subnets
-  * LoadBalancerAttributes
-
-**LoadBalancerAttributesには以下を設定**
-
-  ```
-  - Key: access_logs.s3.enabled
-    Value: false
-  - Key: deletion_protection.enabled
-    Value: false
-  - Key: idle_timeout.timeout_seconds
-    Value: 60
-  ```
-
-* Type: AWS::ElasticLoadBalancingV2::Listener
-* Properties
-  * LoadBalancerArn
-  * Port
-  * Protocol
-  * DefaultActions
-
-### Auto Scalingグループ
-* Type: AWS::AutoScaling::AutoScalingGroup
-* Properties
-  * AutoScalingGroupName
-  * Cooldown
-  * HealthCheckGracePeriod
-  * HealthCheckType
-  * LaunchTemplate
-  * MaxSize
-  * MinSize
-  * DesiredCapacity
-  * VPCZoneIdentifier
-  * TargetGroupARNs
+### 手順
+[sample2.yml](./cloudformation/templates/sample2.yml)を使用してCloudFormationでスタックを作成する。
